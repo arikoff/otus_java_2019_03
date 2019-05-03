@@ -8,7 +8,7 @@ public class HelloOtus {
 
         double f = DoubleMath.factorial(5);
         System.out.println(f);
-
+        
     }
 
 }
