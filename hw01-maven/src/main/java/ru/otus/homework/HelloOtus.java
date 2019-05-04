@@ -6,7 +6,7 @@ public class HelloOtus {
 
     public static void main(String[] args) {
 
-        double f = DoubleMath.factorial(5);
+        double f = DoubleMath.factorial(6);
         System.out.println(f);
         
     }
