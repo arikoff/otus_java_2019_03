@@ -10,7 +10,7 @@ public class AnnotationsTestLauncher {
     private Object instance;
 
     @SneakyThrows
-    public static void Launch(String className) {
+    public static void launch(String className) {
 
         Class<?> clazz = Class.forName(className);
         Constructor<?> constructor = clazz.getConstructor(int.class);

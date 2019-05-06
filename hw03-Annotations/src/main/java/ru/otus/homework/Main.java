@@ -6,7 +6,7 @@ public class Main {
 
     @SneakyThrows
     public static void main(String[] args) {
-        AnnotationsTestLauncher.Launch("ru.otus.homework.AnnotationsTest");
+        AnnotationsTestLauncher.launch("ru.otus.homework.AnnotationsTest");
     }
 }
 
