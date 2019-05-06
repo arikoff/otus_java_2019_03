@@ -8,20 +8,24 @@ public class AnnotationsTest {
 
     DIYarrayList diYarrayList1;
     DIYarrayList diYarrayList2;
+    int num; //для проверки работы исключения на Before
+
+    public AnnotationsTest(int num) {
+        this.num = num;
+    }
 
     @Before
     public void BeforeTest_addAll(){
-        try {
+        if (num == 2) {
+            int a = 1/0;
+        }
+        else {
             diYarrayList1 = new DIYarrayList();
             String[] elements = new String[100];
             for(int i = 0; i < 100; ++i) {
                 elements[i] = Integer.toString((new Random()).nextInt(100));
             }
             Collections.addAll(diYarrayList1, elements);
-            System.out.println("Before - ok");
-        }
-        catch (Exception e) {
-            System.out.println("Before - исключение: " + e.getMessage());
         }
     }
 
