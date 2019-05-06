@@ -4,6 +4,10 @@ import java.util.*;
 
 public class DIYarrayList<T> implements List<T> {
 
+    private static final int DEFAULT_CAPACITY = 10;
+    private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
+    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+
     private int size;
     transient Object[] elementData;
 
@@ -13,15 +17,12 @@ public class DIYarrayList<T> implements List<T> {
             elementData = new Object[size];
         }
         else {
-            throw new IllegalArgumentException("Illegal size: "+
-                    size);
+            throw new IllegalArgumentException("Illegal size: "+ size);
         }
-
     }
 
     public DIYarrayList() {
-        this.size = 0;
-        elementData = new Object[0];
+        this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
     }
 
     ///////////////////////////////////////////////////////////
@@ -30,9 +31,7 @@ public class DIYarrayList<T> implements List<T> {
 
     @Override
     public boolean add(T t) {
-        size++;
-        elementData = Arrays.copyOf(elementData, size);
-        elementData[size-1] = t;
+        add(t, elementData, size);
         return true;
     }
 
@@ -43,11 +42,13 @@ public class DIYarrayList<T> implements List<T> {
 
     @Override
     public T get(int index) {
+        Objects.checkIndex(index, size);
         return (T) elementData[index];
     }
 
     @Override
     public T set(int index, T element) {
+        Objects.checkIndex(index, size);
         T oldValue = (T) elementData[index];
         elementData[index] = element;
         return oldValue;
@@ -64,6 +65,50 @@ public class DIYarrayList<T> implements List<T> {
     }
 
     ///////////////////////////////////////////////////////////
+    // Приватные методы
+    ///////////////////////////////////////////////////////////
+
+    private void add(T t, Object[] elementData, int s) {
+        if (s == elementData.length)
+            elementData = grow();
+        elementData[s] = t;
+        size = s + 1;
+    }
+
+    private Object[] grow(int minCapacity) {
+        return elementData = Arrays.copyOf(elementData,
+                newCapacity(minCapacity));
+    }
+
+    private Object[] grow() {
+        return grow(size + 1);
+    }
+
+    private int newCapacity(int minCapacity) {
+        // overflow-conscious code
+        int oldCapacity = elementData.length;
+        int newCapacity = oldCapacity + (oldCapacity >> 1);
+        if (newCapacity - minCapacity <= 0) {
+            if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
+                return Math.max(DEFAULT_CAPACITY, minCapacity);
+            if (minCapacity < 0) // overflow
+                throw new OutOfMemoryError();
+            return minCapacity;
+        }
+        return (newCapacity - MAX_ARRAY_SIZE <= 0)
+                ? newCapacity
+                : hugeCapacity(minCapacity);
+    }
+
+    private static int hugeCapacity(int minCapacity) {
+        if (minCapacity < 0) // overflow
+            throw new OutOfMemoryError();
+        return (minCapacity > MAX_ARRAY_SIZE)
+                ? Integer.MAX_VALUE
+                : MAX_ARRAY_SIZE;
+    }
+
+   ///////////////////////////////////////////////////////////
     // Неимплементированные методы
     ///////////////////////////////////////////////////////////
 
@@ -98,6 +143,11 @@ public class DIYarrayList<T> implements List<T> {
     }
 
     @Override
+    public void add(int index, T element) {
+        throw new UnsupportedOperationException("add_iT");
+    }
+
+    @Override
     public boolean addAll(Collection<? extends T> c) {
         throw new UnsupportedOperationException("addAll");
     }
@@ -120,11 +170,6 @@ public class DIYarrayList<T> implements List<T> {
     @Override
     public void clear() {
         throw new UnsupportedOperationException("clear");
-    }
-
-    @Override
-    public void add(int index, T element) {
-        throw new UnsupportedOperationException("add_iT");
     }
 
     @Override
@@ -188,37 +233,37 @@ public class DIYarrayList<T> implements List<T> {
 
          @Override
          public boolean hasNext() {
-             return false;
+             return cursor != size;
          }
 
          @Override
          public boolean hasPrevious() {
-             return false;
+             throw new UnsupportedOperationException("ListItr_hasPrevious");
          }
 
          @Override
          public T previous() {
-             return null;
+             throw new UnsupportedOperationException("ListItr_previous");
          }
 
          @Override
          public int nextIndex() {
-             return 0;
+             throw new UnsupportedOperationException("ListItr_nextIndex");
          }
 
          @Override
          public int previousIndex() {
-             return 0;
+             throw new UnsupportedOperationException("ListItr_previousIndex");
          }
 
          @Override
          public void remove() {
-
+             throw new UnsupportedOperationException("ListItr_remove");
          }
 
          @Override
          public void add(T t) {
-
+             throw new UnsupportedOperationException("ListItr_add");
          }
      }
 
