@@ -64,6 +64,11 @@ public class DIYarrayList<T> implements List<T> {
         return Arrays.copyOf(elementData, size);
     }
 
+    @Override
+    public Iterator<T> iterator() {
+        return listIterator();
+    }
+
     ///////////////////////////////////////////////////////////
     // Приватные методы
     ///////////////////////////////////////////////////////////
@@ -120,11 +125,6 @@ public class DIYarrayList<T> implements List<T> {
     @Override
     public boolean contains(Object o) {
         throw new UnsupportedOperationException("contains");
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        throw new UnsupportedOperationException("iterator");
     }
 
     @Override

@@ -18,22 +18,24 @@ public class AnnotationsTestLauncher {
         Method[] methods = clazz.getMethods();
 
         DIYarrayList<Method> beforeMethods = new DIYarrayList<>();
+        DIYarrayList<Method> testMethods = new DIYarrayList<>();
         DIYarrayList<Method> afterMethods = new DIYarrayList<>();
 
         for (Method method : methods)  {
             if (method.isAnnotationPresent(Before.class)) {
                 beforeMethods.add(method);
             }
-        }
-
-        for (Method method : methods)  {
             if (method.isAnnotationPresent(After.class)) {
                 afterMethods.add(method);
+            }
+            if (method.isAnnotationPresent(Test.class)) {
+                testMethods.add(method);
             }
         }
 
         int num = 0;
-        for (Method method : methods)  {
+
+        for (Method method : testMethods)  {
             if (method.isAnnotationPresent(Test.class)) {
                 System.out.println("-----------------------------------------------" + Integer.toString(num));
                 boolean hasException = false;
