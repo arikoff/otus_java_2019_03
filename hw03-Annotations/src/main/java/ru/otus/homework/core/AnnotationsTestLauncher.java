@@ -1,6 +1,10 @@
-package ru.otus.homework;
+package ru.otus.homework.core;
 
 import lombok.SneakyThrows;
+import ru.otus.homework.core.annotations.After;
+import ru.otus.homework.core.annotations.Before;
+import ru.otus.homework.core.annotations.Test;
+import ru.otus.homework.testsource.DIYarrayList;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
