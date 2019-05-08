@@ -12,6 +12,7 @@
         <module>hw01-maven</module>
         <module>hw02-DIYarrayList</module>
         <module>hw03-Annotations</module>
+        <module>hw04-autoLogging</module>
     </modules>
 
     <properties>
