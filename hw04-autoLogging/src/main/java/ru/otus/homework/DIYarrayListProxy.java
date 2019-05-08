@@ -22,10 +22,10 @@ public class DIYarrayListProxy {
 
     static class DemoInvocationHandler implements InvocationHandler {
 
-        private final List myClass;
+        private final Object myClass;
         private final ArrayList<Method> methodsToLog;
 
-        DemoInvocationHandler(List myClass)
+        DemoInvocationHandler(Object myClass)
         {
             this.myClass = myClass;
             this.methodsToLog = new ArrayList<>();
