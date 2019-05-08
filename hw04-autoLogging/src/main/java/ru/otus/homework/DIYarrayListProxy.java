@@ -23,7 +23,7 @@ public class DIYarrayListProxy {
     static class DemoInvocationHandler implements InvocationHandler {
 
         private final Object myClass;
-        private final ArrayList<Method> methodsToLog;
+        private final List<Method> methodsToLog;
 
         DemoInvocationHandler(Object myClass)
         {
