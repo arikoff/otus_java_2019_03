@@ -29,7 +29,7 @@ public class DIYarrayList<T> implements List<T> {
     // Имплементированные методы
     ///////////////////////////////////////////////////////////
 
-    @Log
+//    @Log
     @Override
     public boolean add(T t) {
         add(t, elementData, size);
