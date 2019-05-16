@@ -4,7 +4,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DIYarrayListProxy {
 
@@ -23,7 +25,7 @@ public class DIYarrayListProxy {
     static class DemoInvocationHandler implements InvocationHandler {
 
         private final Object myClass;
-        private final List<Method> methodsToLog;
+        private final List<String> methodsToLog;
 
         DemoInvocationHandler(Object myClass)
         {
@@ -35,66 +37,40 @@ public class DIYarrayListProxy {
 
             for (Method method : methods)  {
                 if (method.isAnnotationPresent(Log.class)) {
-                    methodsToLog.add(method);
+                    methodsToLog.add(getMethodNameWithParameterTypes(method));
                 }
             }
-
         }
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-            for (Method methodToLog : methodsToLog) {
-                if (isMethodsEqual(method, methodToLog)) {
+            for (String methodToLog : methodsToLog) {
+                if (getMethodNameWithParameterTypes(method).equals(methodToLog)) {
                     System.out.println(getLogMessage(method.getName(), args));
                     break;
                 }
             }
-
             return method.invoke(myClass, args);
-
         }
 
-        private boolean isMethodsEqual(Method obj1, Method obj2) {
-            if (obj1 != null && obj2 != null) {
-                if (obj1.getName() == obj2.getName()) {
-                    if (!obj1.getReturnType().equals(obj2.getReturnType()))
-                        return false;
-                    return equalParamTypes(obj1.getParameterTypes(), obj2.getParameterTypes());
-                }
-            }
-            return false;
-        }
-
-        private boolean equalParamTypes(Class<?>[] params1, Class<?>[] params2) {
-            /* Avoid unnecessary cloning */
-            if (params1.length == params2.length) {
-                for (int i = 0; i < params1.length; i++) {
-                    if (params1[i] != params2[i])
-                        return false;
-                }
-                return true;
-            }
-            return false;
+        private String getMethodNameWithParameterTypes(Method method){
+            return method.getName() + "("
+                    + Arrays.stream(method.getParameterTypes()).map(Class::toString).collect(Collectors.joining(","))
+                    + ")";
         }
 
         public String getLogMessage(String methodName, Object[] args) {
 
             String logStr = "executed method: " + methodName + ", param: ";
-            boolean first = true;
+            String strArgs = "";
 
             if (args != null) {
-                for (Object arg : args) {
-                    if (!(first)) {
-                        logStr += ", ";
-                    }
-                    logStr += arg.toString();
-                    first = false;
-                }
+                strArgs = Arrays.stream(args)
+                        .map(Object::toString)
+                        .collect(Collectors.joining(", "));
             }
-
-            return logStr;
-
+            return logStr + strArgs;
         }
     }
 }
